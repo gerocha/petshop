@@ -14,7 +14,8 @@ def app(request):
 
     app = create_app({
         'TESTING': True,
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'
     })
 
     # Establish an application context before running the tests.
@@ -28,6 +29,7 @@ def app(request):
     request.addfinalizer(teardown)
     db.create_all()
     return app
+
 
 @pytest.fixture
 def client(app):
