@@ -1,6 +1,15 @@
+from petshop.user_model import get_user
+
+
 def test_user_insert(client, app):
-    assert client.post('/user',
-                       data={'username': 'batima'}).status_code == 201
+    payload = {
+            'username': 'batima',
+            'email': 'teste@teste.com'
+            }
+    res = client.post('/user', data=payload)
+
+    assert res.status_code == 201
+    assert get_user(payload['username']) is not None
 
 
 def test_user_insert_missing_param_should_not_create_user(client, app):
