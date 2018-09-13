@@ -1,6 +1,9 @@
 import os
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 def create_app(test_config=None):
@@ -8,8 +11,10 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
             SECRET_KEY='dev',
-            DATABASE=os.path.join(app.instance_path, 'petshop.sqlite'),
             )
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    db.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -29,10 +34,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from . import db
-    db.init_app(app)
-
     from .user import UserAPI
-    app.add_url_rule('/user',view_func=UserAPI.as_view('user'))
+    app.add_url_rule('/user', view_func=UserAPI.as_view('user'))
 
     return app
