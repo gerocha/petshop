@@ -3,6 +3,8 @@ import tempfile
 
 import pytest
 from petshop import create_app, db
+from petshop.user_model import insert_user
+from flask import json
 
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
@@ -39,3 +41,22 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
+
+
+@pytest.fixture
+def user_batima(app):
+    payload = {
+            'username': 'batima',
+            'password': '123456',
+            'email': 'teste@teste.com'
+            }
+    insert_user(payload)
+
+    return payload
+
+
+@pytest.fixture
+def logged_batima(user_batima, client):
+    res = client.post('/auth', data=json.dumps(user_batima),
+                      headers={'content-type': 'application/json'})
+    return res
