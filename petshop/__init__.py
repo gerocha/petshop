@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt import JWT, jwt_required
 
 db = SQLAlchemy()
 
@@ -24,6 +25,13 @@ def create_app(test_config=None):
         pass
 
     from .user import UserAPI
+    from .pet import PetAPI
     app.add_url_rule('/user', view_func=UserAPI.as_view('user'))
+    app.add_url_rule('/pet', view_func=jwt_required(PetAPI.as_view('pet')))
+
+    app.config['SECRET_KEY'] = 'super-secret'
+
+    from petshop.user_model import authenticate, identity
+    JWT(app, authenticate, identity)
 
     return app
