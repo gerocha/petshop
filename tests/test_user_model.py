@@ -10,5 +10,4 @@ def test_authenticate_existing_user_should_return_user(user_batima):
 
 def test_is_correct_password_with_correct_password(user_batima):
     user = get_user('batima')
-
-    assert user.is_correct_password('123456') == True
+    assert user.is_correct_password('123456')
