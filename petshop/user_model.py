@@ -35,9 +35,7 @@ def get_user(username: str) -> Dict:
     return User.query.filter_by(username=username).first()
 
 
-def insert_user(user_payload: Dict[str, str]) -> Dict:
-    user = user_payload.copy()
-    user['password'] = generate_password_hash(user['password'])
+def insert_user(user: Dict[str, str]) -> Dict:
     user_obj = User(**user)
     db.session.add(user_obj)
     db.session.commit()
