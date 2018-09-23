@@ -27,7 +27,7 @@ def create_app(test_config=None):
     from .user import UserAPI
     from .pet import PetAPI
     app.add_url_rule('/user', view_func=UserAPI.as_view('user'))
-    app.add_url_rule('/pet', view_func=jwt_required(PetAPI.as_view('pet')))
+    app.add_url_rule('/pet', view_func=PetAPI.as_view('pet'))
 
     app.config['SECRET_KEY'] = 'super-secret'
 
