@@ -57,6 +57,10 @@ def user_batima(app):
 
 @pytest.fixture
 def logged_batima(user_batima, client):
-    res = client.post('/auth', data=json.dumps(user_batima),
+    res = client.post('/auth',
+                      data=json.dumps({
+                          'username': user_batima['username'],
+                          'password': user_batima['password']
+                          }),
                       headers={'content-type': 'application/json'})
     return res
